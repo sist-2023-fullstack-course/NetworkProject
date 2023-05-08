@@ -1,6 +1,7 @@
-package data;
+package com.sist.data;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,6 +30,7 @@ public class DataCollectionManager {
 			"courses/it-programming/programming-lang?order=seq",
 			"courses/it-programming/algorithm?order=seq"
 	};
+	static String filePath = "c:\\java_datas\\datas.ser";
 
 	public static List<LectureVO> collectData() throws IOException {
 		List<LectureVO> list = new ArrayList<LectureVO>();
@@ -55,39 +57,40 @@ public class DataCollectionManager {
 				vo.setPrice(pArr[pArr.length - 1]);
 				vo.setInstructor(instructor.get(j).text());
 				vo.setPoster(poster.get(j).attr("src"));
-//				String url = courseURL.get(j).attr("abs:href");
-//				System.out.println(url);
-//				Document inner = Jsoup.connect(url).get();
-//				System.out.println(inner);
+				String url = courseURL.get(j).attr("abs:href");
+				Document inner = Jsoup.connect(url).get();
+				Element star = inner.selectFirst("div.dashboard-star__num");
+				if(Objects.isNull(star))
+					vo.setStar(0.0);
+				else
+					vo.setStar(Double.parseDouble(star.text()));
 				list.add(vo);
 			}
 		}
 
 		return list;
 	}
+	
+	public static void writeData(List<LectureVO> list) throws IOException {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath));
+		oos.writeObject(list);
+	}
+	
+	public static List<LectureVO> readData() throws IOException, ClassNotFoundException{
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath));
+		return (List<LectureVO>)ois.readObject();
+	}
 
 	public static void main(String[] args) {
-		ObjectOutputStream oos = null;
-		ObjectInputStream ois = null;
 		try {
-			oos = new ObjectOutputStream(new FileOutputStream("C:\\java_datas\\datas.ser"));
-			oos.writeObject(collectData());
-
-			ois = new ObjectInputStream(new FileInputStream("C:\\java_datas\\datas.ser"));
-			List<LectureVO> readObject = (List<LectureVO>) ois.readObject();
+			writeData(collectData());
+			List<LectureVO> data = readData();
 			
-			for (LectureVO vo : readObject) {
+			for(LectureVO vo : data)
 				System.out.println(vo);
-			}
-		} catch (Exception e) {
+		}
+		catch(Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				oos.close();
-				ois.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 	}
 }

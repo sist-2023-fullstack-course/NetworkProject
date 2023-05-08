@@ -1,4 +1,4 @@
-package data;
+package com.sist.data;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

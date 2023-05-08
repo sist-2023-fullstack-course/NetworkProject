@@ -4,9 +4,8 @@ import java.awt.Color;
 
 import javax.swing.JPanel;
 
-public class ChatPanel extends JPanel {
-	public ChatPanel()
-	{
+public class RecommendPanel extends JPanel{
+	public RecommendPanel() {
 		setBackground(Color.green);
 	}
 }

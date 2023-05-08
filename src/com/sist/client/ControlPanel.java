@@ -1,25 +1,21 @@
 package com.sist.client;
-
 import java.awt.CardLayout;
 import java.awt.Color;
 
-import javax.swing.JPanel;
-
+import javax.swing.*;
 public class ControlPanel extends JPanel {
-	HomePanel hp=new HomePanel();
-	FindPanel fp=new FindPanel();
 	NewsPanel np=new NewsPanel();
 	ChatPanel cp=new ChatPanel();
-	
+	FindPanel fp=new FindPanel();
+	RecommendPanel rp=new RecommendPanel();
+	HomePanel hp=new HomePanel();
 	CardLayout card=new CardLayout();
-	public ControlPanel()
-	{
+	public ControlPanel() {
 		setLayout(card);
 		add("home",hp);
 		add("news",np);
 		add("chat",cp);
 		add("find",fp);
-		
-//		setBackground(Color.blue);
+		add("recomm",rp);
 	}
 }

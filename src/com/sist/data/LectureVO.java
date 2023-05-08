@@ -1,4 +1,4 @@
-package data;
+package com.sist.data;
 
 import java.io.Serializable;
 
