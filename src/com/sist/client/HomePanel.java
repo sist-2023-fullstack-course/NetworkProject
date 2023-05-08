@@ -8,8 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.sist.manager.GenieMusicVO;
-import com.sist.manager.MusicSystem;
+import com.sist.data.InflearnSystem;
 
 public class HomePanel extends JPanel{
 	JPanel pan;
@@ -37,8 +36,8 @@ public class HomePanel extends JPanel{
 	}
 	public void cardPrint(int page) {
 		pan.removeAll(); // 데이터 제거
-		for(int i=(page-1)*20;i<Math.min(page*20, MusicSystem.list.size());i++) {
-			pan.add(new PosterCard(MusicSystem.list.get(i)));
+		for(int i=(page-1)*20;i<Math.min(page*20, InflearnSystem.list.size());i++) {
+			pan.add(new PosterCard(InflearnSystem.list.get(i)));
 		}
 	}
 }

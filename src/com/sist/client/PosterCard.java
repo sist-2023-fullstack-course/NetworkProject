@@ -8,13 +8,13 @@ import javax.swing.border.LineBorder;
 import java.net.*;
 
 import com.sist.common.ImageChange;
-import com.sist.manager.GenieMusicVO;
+import com.sist.data.LectureVO;
 public class PosterCard extends JPanel{
 	JLabel poLa = new JLabel(); // 이미지 출력
 	JLabel tLa = new JLabel(); // 제목 출력
 	
 	public PosterCard() {}
-	public PosterCard(GenieMusicVO vo) {
+	public PosterCard(LectureVO vo) {
 		setLayout(null);
 		setBorder(new LineBorder(Color.black));
 		
@@ -25,7 +25,7 @@ public class PosterCard extends JPanel{
 		add(tLa);
 		
 		try {
-			URL url = new URL("http:"+vo.getPoster());
+			URL url = new URL(vo.getPoster());
 			Image img = ImageChange.getImage(new ImageIcon(url), 130, 130);
 			poLa.setIcon(new ImageIcon(img));
 			tLa.setText(vo.getTitle());

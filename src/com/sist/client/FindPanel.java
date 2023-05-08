@@ -13,7 +13,8 @@ import javax.swing.table.DefaultTableModel;
 import java.util.*;
 
 import com.sist.common.ImageChange;
-import com.sist.manager.*;
+import com.sist.data.InflearnSystem;
+import com.sist.data.LectureVO;
 
 public class FindPanel extends JPanel implements ActionListener{
 	JTextField tf;
@@ -21,19 +22,18 @@ public class FindPanel extends JPanel implements ActionListener{
 	JButton b2, b3, b4, b5, b6, b7;
 	JTable table;
 	DefaultTableModel model;
-	MusicSystem ms = new MusicSystem();
 	
 	public FindPanel() {
 		tf = new JTextField();
 		b1 = new JButton("검색");
-		b2 = new JButton("가요");
-		b3 = new JButton("POP");
-		b4 = new JButton("OST");
-		b5 = new JButton("트롯");
-		b6 = new JButton("JAZZ");
-		b7 = new JButton("CLASSIC");
+		b2 = new JButton("웹개발");
+		b3 = new JButton("백엔드");
+		b4 = new JButton("풀스택");
+		b5 = new JButton("모바일 앱");
+		b6 = new JButton("프로그래밍 언어");
+		b7 = new JButton("알고리즘");
 		
-		String[] col = {"", "곡명", "가수명", "앨범"};
+		String[] col = {"", "강의명", "강사명", "가격"};
 		Object[][] row = new Object[0][4];
 		
 		model = new DefaultTableModel(row, col) {
@@ -77,16 +77,16 @@ public class FindPanel extends JPanel implements ActionListener{
 		add(b1);
 		add(p);
 		add(js);
-		List<GenieMusicVO> list = ms.musicCategoryData(1);
+		List<LectureVO> list = InflearnSystem.lectureCategoryData(1);
 		try {
-			for(GenieMusicVO vo : list) {
-				URL url = new URL("http:"+vo.getPoster());
+			for(LectureVO vo : list) {
+				URL url = new URL(vo.getPoster());
 				Image img = ImageChange.getImage(new ImageIcon(url), 30, 30);
 				Object[] data= {
 						new ImageIcon(img),
 						vo.getTitle(),
-						vo.getSinger(),
-						vo.getAlbum()
+						vo.getInstructor(),
+						vo.getPrice()
 				};
 				model.addRow(data);
 			}
@@ -137,15 +137,15 @@ public class FindPanel extends JPanel implements ActionListener{
 			model.removeRow(i);
 		}
 		try {
-			List<GenieMusicVO> list = ms.musicCategoryData(cno);
-			for(GenieMusicVO vo : list) {
-				URL url = new URL("http:"+vo.getPoster());
+			List<LectureVO> list = InflearnSystem.lectureCategoryData(cno);
+			for(LectureVO vo : list) {
+				URL url = new URL(vo.getPoster());
 				Image img = ImageChange.getImage(new ImageIcon(url), 30, 30);
 				Object[] data= {
 						new ImageIcon(img),
 						vo.getTitle(),
-						vo.getSinger(),
-						vo.getAlbum()
+						vo.getInstructor(),
+						vo.getPrice()
 				};
 				model.addRow(data);
 			}
@@ -157,15 +157,15 @@ public class FindPanel extends JPanel implements ActionListener{
 			model.removeRow(i);
 		}
 		try {
-			List<GenieMusicVO> list = ms.FindMusic(s);
-			for(GenieMusicVO vo : list) {
-				URL url = new URL("http:"+vo.getPoster());
+			List<LectureVO> list = InflearnSystem.FindLecture(s);
+			for(LectureVO vo : list) {
+				URL url = new URL(vo.getPoster());
 				Image img = ImageChange.getImage(new ImageIcon(url), 30, 30);
 				Object[] data= {
 						new ImageIcon(img),
 						vo.getTitle(),
-						vo.getSinger(),
-						vo.getAlbum()
+						vo.getInstructor(),
+						vo.getPrice()
 				};
 				model.addRow(data);
 			}

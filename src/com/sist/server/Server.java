@@ -48,7 +48,7 @@ public class Server implements Runnable{
 				Socket s=ss.accept();
 				// 접속시마다 발신자 정보를 확인
 				Client client = new Client(s);
-				waitVc.add(client);
+//				waitVc.add(client);
 				client.start();
 			}
 		}

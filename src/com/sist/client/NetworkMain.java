@@ -16,8 +16,8 @@ import javax.swing.UIManager;
 
 import com.sist.common.Function;
 import com.sist.common.ImageChange;
-import com.sist.manager.GenieMusicVO;
-import com.sist.manager.MusicSystem;
+import com.sist.data.InflearnSystem;
+import com.sist.data.LectureVO;
 public class NetworkMain extends JFrame implements ActionListener, Runnable{
 		MenuPanel mp;
 		ControlPanel cp;
@@ -26,7 +26,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 		JLabel logo;
 		Login login=new Login();
 		int curpage = 1;
-		final int totalpage = MusicSystem.list.size()/20;
+		final int totalpage = InflearnSystem.list.size()/20;
 		
 		//네크워크 관련 클래스
 		Socket s;
@@ -51,10 +51,10 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 			
 			// 메뉴 배치
 			b1=new JButton("홈");
-			b2=new JButton("뮤직검색");
+			b2=new JButton("강의검색");
 			b3=new JButton("채팅");
 			b4=new JButton("뉴스검색");
-			b5=new JButton("뮤직추천");
+			b5=new JButton("강의추천");
 			mp.setLayout(new GridLayout(5,1,10,10));
 			mp.add(b1);
 			mp.add(b2);
