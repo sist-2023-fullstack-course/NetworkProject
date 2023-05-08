@@ -45,26 +45,21 @@ public class Server implements Runnable{
 	public void run() {
 		try {
 			while(true) {
-				Socket s=ss.accept();
+				Socket  s=ss.accept();
 				// 접속시마다 발신자 정보를 확인
 				Client client = new Client(s);
-//				waitVc.add(client);
 				client.start();
 			}
-		}
-		catch(Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	class Client extends Thread{
 		String id, name, sex;
-		// 클라이언트에서 보낸값 읽기
-		BufferedReader in;
-		// 클라이언트로 결과값 전송
-		OutputStream out;
-		// 클라이언트와 연결 ==> 연결 기기
-		Socket s;
+		Socket s; // 클라이언트와 연결 ==> 연결 기기
+		BufferedReader in; // 클라이언트에서 보낸값 읽기
+		OutputStream out; // 클라이언트로 결과값 전송
 		
 		// 연결 시도
 		public Client(Socket s) {
@@ -74,7 +69,7 @@ public class Server implements Runnable{
 				out = s.getOutputStream();
 			}
 			catch(Exception e) {
-				
+				e.printStackTrace();
 			}
 		}
 		// synchronized : 동기화
@@ -99,8 +94,8 @@ public class Server implements Runnable{
 			}
 		}
 		public void run() {
-			while(true) {
-				try {
+			try {
+				while(true) {
 					String msg = in.readLine();
 					StringTokenizer st = new StringTokenizer(msg, "|");
 					
@@ -117,19 +112,20 @@ public class Server implements Runnable{
 						for(Client user : waitVc) {
 							messageTo(Function.LOGIN+"|"+user.id+"|"+user.name+"|"+user.sex);
 						}
+						break;
 					}
 					case Function.CHAT:{
-						String strMsg=st.nextToken();
+						String strMsg = st.nextToken();
 						String color = st.nextToken();
 						messageAll(Function.CHAT+"|["+name+"]"+strMsg+"|"+color);
-						
+						break;
 					}
-					break;
 					}
 				}
-				catch(Exception e) {
-					e.printStackTrace();
-				}
+			} catch(Exception e) {
+					System.err.println("["+id+"/"+name+"] : "+e.getMessage());
+					waitVc.remove(this);
+					messageAll(Function.LOGOUT+"|"+id+"|"+name+"|"+sex);
 			}
 		}
 	}

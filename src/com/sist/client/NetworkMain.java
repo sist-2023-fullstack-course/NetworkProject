@@ -24,7 +24,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 		TopPanel tp;
 		JButton b1,b2,b3,b4,b5;
 		JLabel logo;
-		Login login=new Login();
+		Login login;
 		int curpage = 1;
 		final int totalpage = InflearnSystem.list.size()/20;
 		
@@ -36,7 +36,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 		
 		public NetworkMain() {
 			logo=new JLabel();
-			Image img=ImageChange.getImage(new ImageIcon("c:\\javaDev\\logo1.png"), 200, 60);
+			Image img=ImageChange.getImage(new ImageIcon("C:\\Users\\1004d\\eclipse-workspace\\NetworkProject\\img\\logo.png"), 200, 60);
 			logo.setIcon(new ImageIcon(img));
 			
 			mp=new MenuPanel();
@@ -70,7 +70,6 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 			
 			// 윈도우 크기
 			setSize(1200, 850);
-			//setVisible(true);
 			
 			// 종료
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -84,6 +83,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 			b5.addActionListener(this);
 			
 			// 로그인
+			login = new Login();
 			login.b1.addActionListener(this);
 			login.b2.addActionListener(this);
 			
@@ -91,9 +91,9 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 			cp.cp.tf.addActionListener(this);
 			cp.hp.b1.addActionListener(this);
 			cp.hp.b2.addActionListener(this);
-			musicDisPlay();
+//			musicDisPlay();
 		}
-	public void musicDisPlay() {
+	public void LectureDisplay() {
 		cp.hp.cardPrint(curpage);
 		cp.hp.pageLa.setText(curpage+" page / "+totalpage+" pages");
 	}
@@ -102,7 +102,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==b1) {
 			curpage=1;
-			musicDisPlay();
+			LectureDisplay();
 			cp.card.show(cp, "home");
 		}
 		else if(e.getSource()==b2) {
@@ -166,13 +166,13 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 		else if(e.getSource() == cp.hp.b1) { // 이전
 			if(curpage>1) {
 				curpage--;
-				musicDisPlay();
+				LectureDisplay();
 			}
 		}
 		else if(e.getSource() == cp.hp.b2) { // 다음
 			if(curpage<totalpage) {
 				curpage++;
-				musicDisPlay();
+				LectureDisplay();
 			}
 		}
 		
@@ -196,11 +196,24 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 					setTitle(st.nextToken());
 					login.setVisible(false);
 					setVisible(true);
+					LectureDisplay();
 					break;
 				}
 				case Function.CHAT:{
 					cp.cp.initStyle();
 					cp.cp.append(st.nextToken(), st.nextToken());
+					break;
+				}
+				case Function.LOGOUT:{
+					String id = st.nextToken();
+					String name = st.nextToken();
+					String sex = st.nextToken();
+					for(int i=0;i<cp.cp.model.getRowCount();i++) {
+						if(id.equals(cp.cp.model.getValueAt(i, 0)) &&
+								name.equals(cp.cp.model.getValueAt(i, 1)) &&
+								sex.equals(cp.cp.model.getValueAt(i, 2)))
+							cp.cp.model.removeRow(i);
+					}
 					break;
 				}
 				}
