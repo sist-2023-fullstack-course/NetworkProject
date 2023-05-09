@@ -27,7 +27,8 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 		JLabel logo;
 		Login login;
 		int curpage = 1;
-		final int totalpage = InflearnSystem.list.size()/20;
+//		final int totalpage = InflearnSystem.list.size()/20;
+		final int totalpage = (int)Math.ceil(InflearnSystem.list.size()/20.0);
 		
 		//네크워크 관련 클래스
 		Socket s;
@@ -163,7 +164,6 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 			System.exit(0); // 프로그램 종료
 		}
 		else if(e.getSource()==cp.cp.tf) {
-//			cp.cp.initStyle();
 			String msg=cp.cp.tf.getText();
 			String color=cp.cp.box.getSelectedItem().toString();
 			if(msg.length()<1)

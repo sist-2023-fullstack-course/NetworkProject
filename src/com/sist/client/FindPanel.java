@@ -80,8 +80,7 @@ public class FindPanel extends JPanel implements ActionListener{
 		List<LectureVO> list = InflearnSystem.lectureCategoryData(1);
 		try {
 			for(LectureVO vo : list) {
-				URL url = new URL(vo.getPoster());
-				Image img = ImageChange.getImage(new ImageIcon(url), 30, 30);
+				Image img = ImageChange.getImage(InflearnSystem.imgList.get(vo.getId()-1), 30, 30);
 				Object[] data= {
 						new ImageIcon(img),
 						vo.getTitle(),
@@ -139,8 +138,7 @@ public class FindPanel extends JPanel implements ActionListener{
 		try {
 			List<LectureVO> list = InflearnSystem.lectureCategoryData(cno);
 			for(LectureVO vo : list) {
-				URL url = new URL(vo.getPoster());
-				Image img = ImageChange.getImage(new ImageIcon(url), 30, 30);
+				Image img = ImageChange.getImage(InflearnSystem.imgList.get(vo.getId()-1), 30, 30);
 				Object[] data= {
 						new ImageIcon(img),
 						vo.getTitle(),
@@ -159,8 +157,7 @@ public class FindPanel extends JPanel implements ActionListener{
 		try {
 			List<LectureVO> list = InflearnSystem.FindLecture(s);
 			for(LectureVO vo : list) {
-				URL url = new URL(vo.getPoster());
-				Image img = ImageChange.getImage(new ImageIcon(url), 30, 30);
+				Image img = ImageChange.getImage(InflearnSystem.imgList.get(vo.getId()-1), 30, 30);
 				Object[] data= {
 						new ImageIcon(img),
 						vo.getTitle(),

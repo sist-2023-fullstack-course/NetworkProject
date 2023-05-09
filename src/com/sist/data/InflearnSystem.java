@@ -3,12 +3,20 @@ package com.sist.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
+import com.sist.common.ImageChange;
 import com.sist.common.env;
 
+import java.awt.Image;
 import java.io.*;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class InflearnSystem {
 	public static List<LectureVO> list = new ArrayList<LectureVO>();
+	public static List<ImageIcon> imgList = new ArrayList<ImageIcon>();
 	static {
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
@@ -17,6 +25,10 @@ public class InflearnSystem {
 			ois = new ObjectInputStream(fis);
 			
 			list = (List<LectureVO>)ois.readObject();
+			
+			for(LectureVO vo : list) {
+				imgList.add(new ImageIcon(new URL(vo.getPoster())));
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -29,19 +41,6 @@ public class InflearnSystem {
 				e.printStackTrace();
 			}
 		}
-	}
-	public LectureVO lectureDetailData(String title)
-	{
-		LectureVO vo=new LectureVO();
-		for(LectureVO gvo:list)
-		{
-			if(gvo.getTitle().equals(title))
-			{
-				vo=gvo;
-				break;
-			}
-		}
-		return vo;
 	}
 	
 	public static List<LectureVO> lectureCategoryData(int cno) {

@@ -43,7 +43,7 @@ public class DataCollectionManager {
 			Elements level = doc.select("div.back_course_metas div.course_level span");
 			Elements price = doc.select("div.price");
 			Elements instructor = doc.select("div.instructor");
-			Elements poster = doc.select("div.card-image img");
+			Elements poster = doc.select("img.swiper-lazy");
 			Elements courseURL = doc.select("a.course_card_front");
 			for (int j = 0; j < title.size(); j++) {
 				LectureVO vo = new LectureVO();
