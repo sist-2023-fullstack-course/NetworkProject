@@ -8,7 +8,7 @@ public class LectureVO implements Serializable {
 	private String title;
 	private String content;
 	private String level;
-	private String price;
+	private String price; 
 	private double star;
 	private String instructor;
 	private String poster;

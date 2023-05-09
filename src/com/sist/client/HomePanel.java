@@ -2,20 +2,33 @@ package com.sist.client;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URL;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.sist.common.ImageChange;
 import com.sist.data.InflearnSystem;
+import com.sist.data.LectureVO;
 
-public class HomePanel extends JPanel{
+public class HomePanel extends JPanel implements MouseListener{
+	PosterCard[] pcs=new PosterCard[20];
 	JPanel pan;
 	JPanel pageCon;
 	JButton b1, b2;
 	JLabel pageLa;
-	public HomePanel() {
+	ControlPanel cp;
+	InflearnSystem is=new InflearnSystem();
+	public HomePanel() {}
+	public HomePanel(ControlPanel cp) {
+		
+		this.cp=cp;
 		setLayout(null);
 		b1=new JButton("이전");
 		b2=new JButton("다음");
@@ -36,8 +49,60 @@ public class HomePanel extends JPanel{
 	}
 	public void cardPrint(int page) {
 		pan.removeAll(); // 데이터 제거
+		int j=0;
 		for(int i=(page-1)*20;i<Math.min(page*20, InflearnSystem.list.size());i++) {
-			pan.add(new PosterCard(InflearnSystem.list.get(i)));
+			PosterCard pc = new PosterCard(InflearnSystem.list.get(i));
+			pc.addMouseListener(this);
+			pan.add(pc);
 		}
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		for(int i=0;i<pcs.length;i++)
+		{
+			if(e.getSource()==pcs[i])
+			{
+				//JOptionPane.showMessageDialog(this, i+"번째 호출");
+				String title=pcs[i].tLa.getText();
+				//JOptionPane.showMessageDialog(this, title);
+				LectureVO vo=is.lectureDetailData(title);
+				try
+				{
+					URL url=new URL(vo.getPoster());
+					Image img=ImageChange.getImage(new ImageIcon(url), 530, 350);
+					cp.dp.imgLa.setIcon(new ImageIcon(img));
+					cp.dp.titleLa.setText(vo.getTitle());
+					cp.dp.instructorLa.setText(vo.getInstructor());
+					cp.dp.priceLa.setText(vo.getPrice());
+					cp.dp.contentLa.setText(vo.getContent());
+					cp.dp.levelLa.setText(vo.getLevel());
+//					cp.dp.crementLa.setText(vo.getIdcrement()==0?
+//							        "":String.valueOf(vo.getIdcrement()));
+//					cp.dp.keyLa.setText(vo.getKey());
+					cp.card.show(cp, "detail");
+				}catch(Exception ex){}
+			}
+		}
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

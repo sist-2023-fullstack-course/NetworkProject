@@ -30,6 +30,20 @@ public class InflearnSystem {
 			}
 		}
 	}
+	public LectureVO lectureDetailData(String title)
+	{
+		LectureVO vo=new LectureVO();
+		for(LectureVO gvo:list)
+		{
+			if(gvo.getTitle().equals(title))
+			{
+				vo=gvo;
+				break;
+			}
+		}
+		return vo;
+	}
+	
 	public static List<LectureVO> lectureCategoryData(int cno) {
 		List<LectureVO> ret = new ArrayList<LectureVO>();
 		for(LectureVO vo : list) {
@@ -39,6 +53,7 @@ public class InflearnSystem {
 		}
 		return ret;
 	}
+	
 	public static List<LectureVO> FindLecture(String title){
 		List<LectureVO> ret = new ArrayList<LectureVO>();
 		for(LectureVO vo : list) {
