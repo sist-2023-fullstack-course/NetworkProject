@@ -41,7 +41,14 @@ public class ChatPanel extends JPanel {
 		// 테이블
 		String[] col= {"아이디","이름","성별"};
 		String[][] row=new String[0][3];
-		model=new DefaultTableModel(row,col);
+		model=new DefaultTableModel(row,col)
+		{
+			@Override
+			public boolean isCellEditable(int row, int column) {
+			return false;
+			}
+			
+		};
 		table=new JTable(model);
 		JScrollPane js2=new JScrollPane(table);
 		b1=new JButton("쪽지보내기");
@@ -61,6 +68,8 @@ public class ChatPanel extends JPanel {
 		add(tf); add(box);
 		add(js2);
 		add(p);
+		b1.setEnabled(false);
+		b2.setEnabled(false);
 //		String[] data= {"hong","홍길동","남자"};
 //		model.addRow(data); // 접속자 명단 출력
 		

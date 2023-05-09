@@ -2,11 +2,13 @@ package com.sist.client;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.*;
 import java.net.*;
 import java.io.*;
 
-
+import javax.management.relation.RelationServiceMBean;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,7 +19,7 @@ import javax.swing.UIManager;
 import com.sist.common.*;
 import com.sist.data.InflearnSystem;
 import com.sist.data.LectureVO;
-public class NetworkMain extends JFrame implements ActionListener, Runnable{
+public class NetworkMain extends JFrame implements ActionListener, Runnable, MouseListener{
 		MenuPanel mp;
 		ControlPanel cp;
 		TopPanel tp;
@@ -32,6 +34,10 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 		BufferedReader in;
 		OutputStream out;
 		
+		// 쪽지 클래스
+		String myId;
+		SendMessage sm = new SendMessage();
+		RecvMessage rm = new RecvMessage();
 		
 		public NetworkMain() {
 			logo=new JLabel();
@@ -88,6 +94,17 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 			
 			// 채팅
 			cp.cp.tf.addActionListener(this);
+			cp.cp.table.addMouseListener(this);
+			cp.cp.b1.addActionListener(this);
+			cp.cp.b2.addActionListener(this);
+			
+			// 쪽지
+			sm.b1.addActionListener(this);
+			sm.b2.addActionListener(this);
+			rm.b1.addActionListener(this);
+			rm.b2.addActionListener(this);
+			
+			// 홈화면
 			cp.hp.b1.addActionListener(this);
 			cp.hp.b2.addActionListener(this);
 		}
@@ -173,6 +190,52 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 				LectureDisplay();
 			}
 		}
+		else if(e.getSource() == cp.cp.b1) { // 쪽지 보내기
+			int row = cp.cp.table.getSelectedRow();
+			sm.tf.setText(cp.cp.table.getValueAt(row, 0).toString());
+			sm.tf.setEditable(false);
+			sm.ta.setText("");
+			sm.setVisible(true);
+		}
+		else if(e.getSource() == cp.cp.b2) { // 정보 보기
+			int row = cp.cp.table.getSelectedRow();
+			String id = cp.cp.table.getValueAt(row, 0).toString();
+			String msg = Function.INFO+"|"+id+"|"+"\n";
+			try {
+				out.write(msg.getBytes());
+			}catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		else if(e.getSource() == sm.b1) { //보내기 버튼
+			String id = sm.tf.getText();
+			String content = sm.ta.getText();
+			if(content.length()<1) {
+				sm.ta.requestFocus();
+				return;
+			}
+			
+			String msg = Function.MSGSEND+"|"+id+"|"+content+"\n";
+			
+			try {
+				out.write(msg.getBytes());
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
+			sm.setVisible(false);
+		}
+		else if(e.getSource() == sm.b2) { //취소
+			sm.setVisible(false);
+		}
+		else if(e.getSource() == rm.b1) { // 답장하기
+			sm.tf.setText(rm.tf.getText()); 
+			sm.ta.setText("");
+			rm.setVisible(false);
+			sm.setVisible(true);
+		}
+		else if(e.getSource() == rm.b2) { // 취소
+			rm.setVisible(false);
+		}
 		
 	}
 
@@ -192,6 +255,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 				}
 				case Function.MYLOG:{
 					setTitle(st.nextToken());
+					myId = st.nextToken();
 					login.setVisible(false);
 					setVisible(true);
 					LectureDisplay();
@@ -214,6 +278,19 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 					}
 					break;
 				}
+				case Function.MSGSEND:{
+					String id = st.nextToken();
+					String content = st.nextToken();
+					rm.tf.setText(id);
+					rm.ta.setText(content);
+					rm.setVisible(true);
+				}
+				case Function.INFO:{
+					String data="아이디:"+st.nextToken()+"\n"
+						     +"이름:"+st.nextToken()+"\n"
+						     +"성별:"+st.nextToken();
+				  JOptionPane.showMessageDialog(this, data);
+				}
 				}
 						
 			}
@@ -229,6 +306,37 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 			UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
 		}catch(Exception ex){}
 		new NetworkMain();
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource() == cp.cp.table) {
+			int row = cp.cp.table.getSelectedRow();
+			
+			if(cp.cp.table.getValueAt(row, 0).equals(myId)) {
+				cp.cp.b1.setEnabled(false);
+				cp.cp.b2.setEnabled(false);
+			}
+			else {
+				cp.cp.b1.setEnabled(true);
+				cp.cp.b2.setEnabled(true);
+			}
+		}
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		
 	}
 	
 }

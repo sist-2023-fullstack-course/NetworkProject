@@ -107,7 +107,7 @@ public class Server implements Runnable{
 						sex=st.nextToken();
 						messageAll(Function.LOGIN+"|"+id+"|"+name+"|"+sex);
 						waitVc.add(this);
-						messageTo(Function.MYLOG+"|"+name);
+						messageTo(Function.MYLOG+"|"+name+"|"+id);
 						
 						for(Client user : waitVc) {
 							messageTo(Function.LOGIN+"|"+user.id+"|"+user.name+"|"+user.sex);
@@ -119,6 +119,28 @@ public class Server implements Runnable{
 						String color = st.nextToken();
 						messageAll(Function.CHAT+"|["+name+"]"+strMsg+"|"+color);
 						break;
+					}
+					case Function.INFO:{
+						String youId = st.nextToken();
+						for(Client user:waitVc) {
+							if(youId.equals(user.id)) {
+								messageTo(Function.INFO+"|"+user.id+"|"+user.name+"|"+user.sex);
+								break;
+							}
+						}
+						break;
+					}
+					case Function.MSGSEND:{
+						String youId = st.nextToken();
+						String content = st.nextToken();
+						
+						for(Client user : waitVc) {
+							if(youId.equals(user.id)) {
+								String msgStr = Function.MSGSEND+"|"+id+"|"+content;
+								user.messageTo(msgStr);
+								break;
+							}
+						}
 					}
 					}
 				}
