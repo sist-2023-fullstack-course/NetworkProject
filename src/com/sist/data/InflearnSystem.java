@@ -2,6 +2,9 @@ package com.sist.data;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.sist.common.env;
+
 import java.io.*;
 
 public class InflearnSystem {
@@ -10,7 +13,7 @@ public class InflearnSystem {
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 		try {
-			fis = new FileInputStream("c:\\java_datas\\datas.ser");
+			fis = new FileInputStream(env.dataUrl);
 			ois = new ObjectInputStream(fis);
 			
 			list = (List<LectureVO>)ois.readObject();

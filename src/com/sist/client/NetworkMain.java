@@ -14,8 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import com.sist.common.Function;
-import com.sist.common.ImageChange;
+import com.sist.common.*;
 import com.sist.data.InflearnSystem;
 import com.sist.data.LectureVO;
 public class NetworkMain extends JFrame implements ActionListener, Runnable{
@@ -36,7 +35,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 		
 		public NetworkMain() {
 			logo=new JLabel();
-			Image img=ImageChange.getImage(new ImageIcon("C:\\Users\\1004d\\eclipse-workspace\\NetworkProject\\img\\logo.png"), 200, 60);
+			Image img=ImageChange.getImage(new ImageIcon(env.logoUrl), 200, 60);
 			logo.setIcon(new ImageIcon(img));
 			
 			mp=new MenuPanel();
@@ -91,7 +90,6 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 			cp.cp.tf.addActionListener(this);
 			cp.hp.b1.addActionListener(this);
 			cp.hp.b2.addActionListener(this);
-//			musicDisPlay();
 		}
 	public void LectureDisplay() {
 		cp.hp.cardPrint(curpage);
@@ -134,7 +132,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable{
 			
 			//서버로 전송
 			try {
-				s = new Socket("localhost", 10000);
+				s = new Socket(env.serverAddress, 10000);
 				in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 				out = s.getOutputStream();
 				

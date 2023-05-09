@@ -16,7 +16,6 @@ public class PosterCard extends JPanel{
 	public PosterCard() {}
 	public PosterCard(LectureVO vo) {
 		setLayout(null);
-//		setBorder(new LineBorder(Color.black));
 		
 		poLa.setBounds(5, 5, 130, 130);
 		tLa.setBounds(5, 140, 150, 30);
