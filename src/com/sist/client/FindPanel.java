@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.URL;
 
 import javax.swing.*;
@@ -16,13 +18,18 @@ import com.sist.common.ImageChange;
 import com.sist.data.InflearnSystem;
 import com.sist.data.LectureVO;
 
-public class FindPanel extends JPanel implements ActionListener{
+public class FindPanel extends JPanel implements ActionListener, MouseListener{
 	JTextField tf;
 	JButton b1;
 	JButton b2, b3, b4, b5, b6, b7;
 	JTable table;
 	DefaultTableModel model;
+	ControlPanel cp;
 	
+	public FindPanel(ControlPanel cp) {
+		this();
+		this.cp = cp;
+	}
 	public FindPanel() {
 		tf = new JTextField();
 		b1 = new JButton("검색");
@@ -49,10 +56,18 @@ public class FindPanel extends JPanel implements ActionListener{
 			
 			
 		};
-		table = new JTable(model);
+		table = new JTable(model);	
+		table.getColumn("").setPreferredWidth(100);
+		table.getColumn("강의명").setPreferredWidth(420);
+		table.getColumn("강사명").setPreferredWidth(100);
+		table.getColumn("가격").setPreferredWidth(80);
 		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setResizingAllowed(false);
 		table.setRowHeight(35);
+		
+		
 		JScrollPane js = new JScrollPane(table);
+		js.setBounds(10, 100, 700, 600);
 		
 		//배치 750 730
 		setLayout(null);
@@ -70,9 +85,8 @@ public class FindPanel extends JPanel implements ActionListener{
 		p.add(b5);
 		p.add(b6);
 		p.add(b7);
-		p.setBounds(10, 55, 720, 35);
+		p.setBounds(10, 55, 700, 35);
 		
-		js.setBounds(10, 100, 700, 600);
 		add(tf);
 		add(b1);
 		add(p);
@@ -99,6 +113,7 @@ public class FindPanel extends JPanel implements ActionListener{
 		b6.addActionListener(this);
 		b7.addActionListener(this);
 		tf.addActionListener(this);
+		table.addMouseListener(this);
 	}
 
 	@Override
@@ -169,4 +184,31 @@ public class FindPanel extends JPanel implements ActionListener{
 		} catch (Exception e) {
 		}
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getClickCount()==2) {
+			int row = table.getSelectedRow();
+			String title = table.getValueAt(row, 1).toString();
+			
+			for(LectureVO vo : InflearnSystem.list) {
+				if(vo.getTitle().equals(title)) {
+					cp.dp.printDetails(vo);
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
 }

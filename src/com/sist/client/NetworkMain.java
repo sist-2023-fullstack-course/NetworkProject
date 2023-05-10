@@ -20,99 +20,81 @@ import com.sist.common.*;
 import com.sist.data.InflearnSystem;
 import com.sist.data.LectureVO;
 public class NetworkMain extends JFrame implements ActionListener, Runnable, MouseListener{
-		MenuPanel mp;
-		ControlPanel cp;
-		TopPanel tp;
-		JButton b1,b2,b3,b4,b5,b6;
-		JLabel logo;
-		Login login;
-		int curpage = 1;
-//		final int totalpage = InflearnSystem.list.size()/20;
-		final int totalpage = (int)Math.ceil(InflearnSystem.list.size()/20.0);
+	MenuPanel mp;
+	ControlPanel cp;
+	TopPanel tp;
+	JLabel logo;
+	Login login;
+	int curpage = 1;
+	final int totalpage = (int)Math.ceil(InflearnSystem.list.size()/20.0);
+	
+	//네크워크 관련 클래스
+	Socket s;
+	BufferedReader in;
+	OutputStream out;
+	
+	// 쪽지 클래스
+	String myId;
+	SendMessage sm = new SendMessage();
+	RecvMessage rm = new RecvMessage();
 		
-		//네크워크 관련 클래스
-		Socket s;
-		BufferedReader in;
-		OutputStream out;
+	public NetworkMain() {
+		logo=new JLabel();
+		Image img=ImageChange.getImage(new ImageIcon(env.logoUrl), 200, 60);
+		logo.setIcon(new ImageIcon(img));
 		
-		// 쪽지 클래스
-		String myId;
-		SendMessage sm = new SendMessage();
-		RecvMessage rm = new RecvMessage();
+		mp=new MenuPanel();
+		cp=new ControlPanel();
+		tp=new TopPanel();
+			
+		setLayout(null); // Layout없이 직접 배치
+		logo.setBounds(10, 15, 200, 130);
+		cp.setBounds(220, 15, 750, 780);
+		tp.setBounds(980, 15, 200, 780);
+			
+		// 추가
+		add(mp);
+		add(cp);
+		add(tp);
+		add(logo);
+			
+		// 윈도우 크기
+		setSize(1200, 850);
 		
-		public NetworkMain() {
-			logo=new JLabel();
-			Image img=ImageChange.getImage(new ImageIcon(env.logoUrl), 200, 60);
-			logo.setIcon(new ImageIcon(img));
+		// 종료
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setTitle("네트워크 인프런 프로그램");
+		
+		// 이벤트 등록
+		mp.b1.addActionListener(this);
+		mp.b2.addActionListener(this);
+		mp.b3.addActionListener(this);
+		mp.b4.addActionListener(this);
+		mp.b5.addActionListener(this);
+		mp.b6.addActionListener(this);
 			
-			mp=new MenuPanel();
-			cp=new ControlPanel();
-			tp=new TopPanel();
+		// 로그인
+		login = new Login();
+		login.b1.addActionListener(this);
+		login.b2.addActionListener(this);
 			
-			setLayout(null); // Layout없이 직접 배치
-			logo.setBounds(10, 15, 200, 130);
-			mp.setBounds(10, 150, 200, 300);
-			cp.setBounds(220, 15, 750, 780);
-			tp.setBounds(980, 15, 200, 780);
+		// 채팅
+		cp.cp.tf.addActionListener(this);
+		cp.cp.table.addMouseListener(this);
+		cp.cp.b1.addActionListener(this);
+		cp.cp.b2.addActionListener(this);
 			
-			// 메뉴 배치
-			b1=new JButton("홈");
-			b2=new JButton("강의검색");
-			b3=new JButton("채팅");
-			b4=new JButton("뉴스검색");
-			b5=new JButton("커뮤니티");
-			b6=new JButton("나가기");
-			mp.setLayout(new GridLayout(6,1,10,10));
-			mp.add(b1);
-			mp.add(b2);
-			mp.add(b3);
-			mp.add(b4);
-			mp.add(b5);
-			mp.add(b6);
-			
-			// 추가
-			add(mp);
-			add(cp);
-			add(tp);
-			add(logo);
-			
-			// 윈도우 크기
-			setSize(1200, 850);
-			
-			// 종료
-			setDefaultCloseOperation(EXIT_ON_CLOSE);
-//			setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-			setTitle("네트워크 인프런 프로그램");
-			
-			// 이벤트 등록
-			b1.addActionListener(this);
-			b2.addActionListener(this);
-			b3.addActionListener(this);
-			b4.addActionListener(this);
-			b5.addActionListener(this);
-			b6.addActionListener(this);
-			
-			// 로그인
-			login = new Login();
-			login.b1.addActionListener(this);
-			login.b2.addActionListener(this);
-			
-			// 채팅
-			cp.cp.tf.addActionListener(this);
-			cp.cp.table.addMouseListener(this);
-			cp.cp.b1.addActionListener(this);
-			cp.cp.b2.addActionListener(this);
-			
-			// 쪽지
-			sm.b1.addActionListener(this);
-			sm.b2.addActionListener(this);
-			rm.b1.addActionListener(this);
-			rm.b2.addActionListener(this);
-			
-			// 홈화면
-			cp.hp.b1.addActionListener(this);
-			cp.hp.b2.addActionListener(this);
-		}
+		// 쪽지
+		sm.b1.addActionListener(this);
+		sm.b2.addActionListener(this);
+		rm.b1.addActionListener(this);
+		rm.b2.addActionListener(this);
+		
+		// 홈화면
+		cp.hp.b1.addActionListener(this);
+		cp.hp.b2.addActionListener(this);
+	}
 	public void LectureDisplay() {
 		cp.hp.cardPrint(curpage);
 		cp.hp.pageLa.setText(curpage+" page / "+totalpage+" pages");
@@ -120,23 +102,30 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 	// 버튼 처리
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==b1) {
+		if(e.getSource()==mp.b1) {
 			curpage=1;
 			LectureDisplay();
 			cp.card.show(cp, "home");
 		}
-		else if(e.getSource()==b2) {
+		else if(e.getSource()==mp.b2) {
 			cp.card.show(cp, "find");
 		}
-		else if(e.getSource()==b3) {
+		else if(e.getSource()==mp.b3) {
 			cp.card.show(cp, "chat");
 		}
-		else if(e.getSource()==b4) {
+		else if(e.getSource()==mp.b4) {
 			cp.card.show(cp, "news");
 		}
-		else if(e.getSource()==b5) {
+		else if(e.getSource()==mp.b5) {
 			cp.bp.boardPrint();
 			cp.card.show(cp, "board");
+		}
+		else if(e.getSource() == mp.b6) { // 나가기
+			try {
+				out.write((Function.EXIT+"|\n").getBytes());
+			}catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 		else if(e.getSource()==login.b1) {
 			String id = login.tf1.getText();
@@ -155,7 +144,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 			
 			//서버로 전송
 			try {
-				s = new Socket("211.238.142.108", 10000);
+				s = new Socket(env.serverAddress, 10000);
 				in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 				out = s.getOutputStream();
 				
@@ -240,13 +229,6 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 		}
 		else if(e.getSource() == rm.b2) { // 취소
 			rm.setVisible(false);
-		}
-		else if(e.getSource() == b6) { // 나가기
-			try {
-				out.write((Function.EXIT+"|\n").getBytes());
-			}catch (Exception ex) {
-				ex.printStackTrace();
-			}
 		}
 	}
 

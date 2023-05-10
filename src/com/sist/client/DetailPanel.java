@@ -107,7 +107,7 @@ public class DetailPanel extends JPanel implements ActionListener{
 		}
 		else if(e.getSource()==b2)
 		{
-			cp.card.show(cp, "home");
+			cp.card.show(cp, cp.prevCard);
 		}
 		
 	}

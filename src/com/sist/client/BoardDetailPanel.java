@@ -75,14 +75,14 @@ public class BoardDetailPanel extends JPanel implements ActionListener{
 		subLa.setBounds(75, 155, 615, 30);
 		add(la5); add(subLa);
 		
-		js.setBounds(10, 190, 675, 150);
+		js.setBounds(10, 190, 675, 300);
 		add(js);
 		
 		JPanel p = new JPanel();
 		p.add(b1);
 		p.add(b2);
 		p.add(b3);
-		p.setBounds(10, 350, 675, 35);
+		p.setBounds(10, 500, 675, 35);
 		add(p);
 		
 		b1.addActionListener(this);
