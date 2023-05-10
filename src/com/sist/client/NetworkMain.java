@@ -23,7 +23,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 		MenuPanel mp;
 		ControlPanel cp;
 		TopPanel tp;
-		JButton b1,b2,b3,b4,b5;
+		JButton b1,b2,b3,b4,b5,b6;
 		JLabel logo;
 		Login login;
 		int curpage = 1;
@@ -60,13 +60,15 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 			b2=new JButton("강의검색");
 			b3=new JButton("채팅");
 			b4=new JButton("뉴스검색");
-			b5=new JButton("강의추천");
-			mp.setLayout(new GridLayout(5,1,10,10));
+			b5=new JButton("커뮤니티");
+			b6=new JButton("나가기");
+			mp.setLayout(new GridLayout(6,1,10,10));
 			mp.add(b1);
 			mp.add(b2);
 			mp.add(b3);
 			mp.add(b4);
 			mp.add(b5);
+			mp.add(b6);
 			
 			// 추가
 			add(mp);
@@ -79,6 +81,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 			
 			// 종료
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
+//			setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 			setTitle("네트워크 뮤직 프로그램");
 			
 			// 이벤트 등록
@@ -87,6 +90,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 			b3.addActionListener(this);
 			b4.addActionListener(this);
 			b5.addActionListener(this);
+			b6.addActionListener(this);
 			
 			// 로그인
 			login = new Login();
@@ -131,7 +135,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 			cp.card.show(cp, "news");
 		}
 		else if(e.getSource()==b5) {
-			cp.card.show(cp, "recomm");
+			cp.card.show(cp, "board");
 		}
 		else if(e.getSource()==login.b1) {
 			String id = login.tf1.getText();
@@ -236,7 +240,13 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 		else if(e.getSource() == rm.b2) { // 취소
 			rm.setVisible(false);
 		}
-		
+		else if(e.getSource() == b6) { // 나가기
+			try {
+				out.write((Function.EXIT+"|\n").getBytes());
+			}catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -284,15 +294,21 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 					rm.tf.setText(id);
 					rm.ta.setText(content);
 					rm.setVisible(true);
+					break;
 				}
 				case Function.INFO:{
 					String data="아이디:"+st.nextToken()+"\n"
 						     +"이름:"+st.nextToken()+"\n"
 						     +"성별:"+st.nextToken();
-				  JOptionPane.showMessageDialog(this, data);
+					JOptionPane.showMessageDialog(this, data);
+					break;
+				}
+				case Function.MYEXIT:{
+					dispose();
+					System.exit(0);
+					break;
 				}
 				}
-						
 			}
 		}
 		catch(Exception e) {
@@ -324,19 +340,14 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
-		
 	}
-	
 }

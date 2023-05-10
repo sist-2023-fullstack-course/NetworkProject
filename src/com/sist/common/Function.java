@@ -10,5 +10,6 @@ public class Function {
 	public static final int CHAT=200;
 	public static final int MSGSEND=300;
 	public static final int INFO=400;
-	
+	public static final int MYEXIT=900;
+	public static final int EXIT=990;
 }

@@ -142,6 +142,11 @@ public class Server implements Runnable{
 							}
 						}
 					}
+					case Function.EXIT:
+						waitVc.remove(this);
+						messageAll(Function.LOGOUT+"|"+id+"|"+name+"|"+sex);
+						messageTo(Function.MYEXIT+"|");
+						break;
 					}
 				}
 			} catch(Exception e) {
