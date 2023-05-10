@@ -124,6 +124,7 @@ public class BoardListPanel extends JPanel implements ActionListener,MouseListen
 			int row = table.getSelectedRow();
 			String no = table.getValueAt(row, 0).toString();
 			BoardVO vo = bm.boardDetailData(Integer.parseInt(no));
+			vo.setHit(vo.getHit()+1);
 			cp.bdp.noLa.setText(String.valueOf(vo.getNo()));
 			cp.bdp.nameLa.setText(vo.getName());
 			cp.bdp.subLa.setText(vo.getSubject());

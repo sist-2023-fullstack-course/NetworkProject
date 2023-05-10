@@ -38,8 +38,9 @@ public class BoardManager implements BoardInterface{
 	public BoardVO boardDetailData(int no) {
 		BoardVO vo = new BoardVO();
 		for(BoardVO v : list) {
-			if(no==v.getNo()) {
-				return v;
+			if(no==v.getNo())
+			{
+				vo=v;
 			}
 		}
 		return vo;

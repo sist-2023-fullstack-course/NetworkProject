@@ -135,6 +135,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 			cp.card.show(cp, "news");
 		}
 		else if(e.getSource()==b5) {
+			cp.bp.boardPrint();
 			cp.card.show(cp, "board");
 		}
 		else if(e.getSource()==login.b1) {
@@ -154,7 +155,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 			
 			//서버로 전송
 			try {
-				s = new Socket(env.serverAddress, 10000);
+				s = new Socket("211.238.142.108", 10000);
 				in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 				out = s.getOutputStream();
 				
