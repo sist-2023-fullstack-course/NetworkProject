@@ -106,7 +106,8 @@ public class BoardListPanel extends JPanel implements ActionListener,MouseListen
 		totalpage = bm.boardTotalPage();
 		pageLa.setText(curpage+" page / " + totalpage+" pages");
 		
-		for(BoardVO vo : list) {
+		for(int i=list.size()-1;i>=0;i--) {	//게시글 최신글 출력
+			BoardVO vo=list.get(i);
 			String[] data = {
 					String.valueOf(vo.getNo()),
 					vo.getSubject(),

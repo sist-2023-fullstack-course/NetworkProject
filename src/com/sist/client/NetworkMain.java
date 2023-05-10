@@ -82,7 +82,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 			// 종료
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
 //			setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-			setTitle("네트워크 뮤직 프로그램");
+			setTitle("네트워크 인프런 프로그램");
 			
 			// 이벤트 등록
 			b1.addActionListener(this);
