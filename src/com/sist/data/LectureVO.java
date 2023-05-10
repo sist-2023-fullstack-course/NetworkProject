@@ -12,6 +12,7 @@ public class LectureVO implements Serializable {
 	private double star;
 	private String instructor;
 	private String poster;
+	private String link;
 
 	public int getId() {
 		return id;
@@ -83,6 +84,14 @@ public class LectureVO implements Serializable {
 
 	public void setLevel(String level) {
 		this.level = level;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
 	}
 
 	@Override

@@ -60,6 +60,7 @@ public class DataCollectionManager {
 				vo.setInstructor(instructor.get(j).text());
 				vo.setPoster(poster.get(j).attr("src"));
 				String url = courseURL.get(j).attr("abs:href");
+				vo.setLink(url);
 				Document inner = Jsoup.connect(url).get();
 				Element star = inner.selectFirst("div.dashboard-star__num");
 				if(Objects.isNull(star))

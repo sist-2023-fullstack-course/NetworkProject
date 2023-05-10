@@ -141,6 +141,7 @@ public class Server implements Runnable{
 								break;
 							}
 						}
+						break;
 					}
 					case Function.EXIT:
 						waitVc.remove(this);

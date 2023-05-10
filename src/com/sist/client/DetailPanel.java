@@ -6,6 +6,7 @@ import javax.swing.*;
 import com.sist.common.ImageChange;
 import com.sist.data.InflearnSystem;
 import com.sist.data.LectureVO;
+import com.sist.common.*;
 
 import java.awt.event.*;
 import java.net.MalformedURLException;
@@ -15,6 +16,7 @@ public class DetailPanel extends JPanel implements ActionListener{
 	JLabel imgLa;
     JLabel la1,la2,la3,la4,la5;
     JLabel titleLa,instructorLa,priceLa,levelLa,starLa;
+    JLabel linkLa;
     JTextPane contentLa;
     JButton b1,b2;
     ControlPanel cp;
@@ -28,6 +30,7 @@ public class DetailPanel extends JPanel implements ActionListener{
 		contentLa.setText(vo.getContent());
 		levelLa.setText(vo.getLevel());
 		starLa.setText(Double.toString(vo.getStar()));
+		linkLa.setText(vo.getLink());
 		cp.card.show(cp, "detail");
     }
     
@@ -52,6 +55,8 @@ public class DetailPanel extends JPanel implements ActionListener{
     	contentLa=new JTextPane();
     	levelLa=new JLabel();
     	starLa=new JLabel();
+    	
+    	linkLa=new JLabel();
 
     	// 배치 
     	setLayout(null);
@@ -97,7 +102,7 @@ public class DetailPanel extends JPanel implements ActionListener{
 		{
 			try
 			{
-				JOptionPane.showMessageDialog(this, "강의사이트 열림");
+				Runtime.getRuntime().exec(env.chromePath + " " + linkLa.getText());	
 			}catch(Exception ex){}
 		}
 		else if(e.getSource()==b2)
