@@ -2,7 +2,13 @@ package com.sist.client;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
+
+import javax.imageio.plugins.bmp.BMPImageWriteParam;
 import javax.swing.*;
+
+import com.sist.data.BoardManager;
+import com.sist.data.BoardVO;
 public class BoardDetailPanel extends JPanel implements ActionListener{
 	ControlPanel cp;
 	JLabel titleLa;
@@ -10,8 +16,11 @@ public class BoardDetailPanel extends JPanel implements ActionListener{
 	JLabel noLa, nameLa, dateLa, hitLa, subLa;
 	JTextPane pane;
 	JButton b1,b2,b3;
+	BoardManager bm;
 	
 	public BoardDetailPanel() {
+		bm = new BoardManager();
+		
 		titleLa = new JLabel("내용보기");
 		titleLa.setFont(new Font("맑은 고딕", Font.BOLD, 45));
 		titleLa.setHorizontalAlignment(JLabel.CENTER);
@@ -38,6 +47,7 @@ public class BoardDetailPanel extends JPanel implements ActionListener{
 		hitLa=new JLabel();
 		
 		pane = new JTextPane();
+		pane.setEditable(false);
 		JScrollPane js = new JScrollPane(pane);
 		
 		b1=new JButton("수정");
@@ -75,6 +85,8 @@ public class BoardDetailPanel extends JPanel implements ActionListener{
 		p.setBounds(10, 350, 675, 35);
 		add(p);
 		
+		b1.addActionListener(this);
+		b2.addActionListener(this);
 		b3.addActionListener(this);
 	}
 	public BoardDetailPanel(ControlPanel cp) {
@@ -83,7 +95,28 @@ public class BoardDetailPanel extends JPanel implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==b3) {
+		if(e.getSource()==b1) {
+			int no = Integer.parseInt(noLa.getText());
+			BoardVO vo = bm.boardDetailData(no);
+			cp.bup.vo = vo;
+			cp.bup.tf1.setText(vo.getName());
+			cp.bup.tf2.setText(vo.getSubject());
+			cp.bup.ta.setText(vo.getContent());
+			cp.bup.pf.setText(vo.getPwd());
+			cp.card.show(cp, "update");
+		}
+		else if(e.getSource()==b2) {
+			int result = JOptionPane.showConfirmDialog(this, "정말 삭제하시겠습니까?", "삭제", JOptionPane.YES_NO_OPTION); 
+			if(result==1) { // 아니오
+				return;
+			}
+			else if(result==0) { // 예
+				bm.boardDelete(Integer.parseInt(noLa.getText()));
+				cp.bp.boardPrint();
+				cp.card.show(cp, "board");
+			}
+		}
+		else if(e.getSource()==b3) {
 			cp.card.show(cp, "board");
 			cp.bp.boardPrint();
 		}

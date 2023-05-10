@@ -18,7 +18,7 @@ public interface BoardInterface {
 	public String boardUpdate();
 	
 	// 6. 삭제
-	public String boardDelete(int no, String pwd);
+	public void boardDelete(int no);
 	
 	// 7. 자동 증가번호
 	public int noIncrement();

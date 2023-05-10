@@ -68,8 +68,13 @@ public class BoardManager implements BoardInterface{
 	}
 
 	@Override
-	public String boardDelete(int no, String pwd) {
-		return null;
+	public void boardDelete(int no) {
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getNo()==no) {
+				list.remove(i);
+				break;
+			}
+		}
 	}
 
 	@Override
