@@ -1,6 +1,8 @@
 package com.sist.data;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -62,5 +64,35 @@ public class InflearnSystem {
 			}
 		}
 		return ret;
+	}
+	public static List<LectureVO> getMostReviewedData(){
+		List<LectureVO> copyList = new ArrayList<LectureVO>();
+		for(LectureVO vo : list)
+			copyList.add(vo);
+		copyList.sort(new lectureComparator());
+		HashSet<String> hs = new HashSet<String>();
+		
+		int i=0;
+		List<LectureVO> ret = new ArrayList<LectureVO>();
+		for(LectureVO vo : copyList) {
+			if(i==10) break;
+			if(!hs.contains(vo.getTitle())) {
+				ret.add(vo);
+				hs.add(vo.getTitle());
+				i++;
+			}
+		}
+		return ret;
+	}
+}
+
+class lectureComparator implements Comparator<LectureVO>{
+	@Override
+	public int compare(LectureVO o1, LectureVO o2) {
+		if(o1.getReviewcnt() < o2.getReviewcnt())
+			return 1;
+		else if(o1.getReviewcnt() > o2.getReviewcnt())
+			return -1;
+		return 0;
 	}
 }

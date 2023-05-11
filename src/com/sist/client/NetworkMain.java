@@ -45,12 +45,12 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 		
 		mp=new MenuPanel();
 		cp=new ControlPanel();
-		tp=new TopPanel();
+		tp=new TopPanel(cp);
 			
 		setLayout(null); // Layout없이 직접 배치
 		logo.setBounds(10, 15, 200, 130);
 		cp.setBounds(220, 15, 750, 780);
-		tp.setBounds(980, 15, 200, 780);
+		tp.setBounds(980, 15, 350, 800);
 			
 		// 추가
 		add(mp);
@@ -59,7 +59,7 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 		add(logo);
 			
 		// 윈도우 크기
-		setSize(1200, 850);
+		setSize(1350, 850);
 		
 		// 종료
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -94,6 +94,9 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 		// 홈화면
 		cp.hp.b1.addActionListener(this);
 		cp.hp.b2.addActionListener(this);
+		
+		// top화면
+		tp.table.addMouseListener(this);
 	}
 	public void LectureDisplay() {
 		cp.hp.cardPrint(curpage);
@@ -319,6 +322,10 @@ public class NetworkMain extends JFrame implements ActionListener, Runnable, Mou
 				cp.cp.b1.setEnabled(true);
 				cp.cp.b2.setEnabled(true);
 			}
+		}
+		else if(e.getSource()==tp.table && e.getClickCount()==2) {
+			int row = tp.table.getSelectedRow();
+			cp.dp.printDetails(tp.list.get(row));
 		}
 	}
 	@Override

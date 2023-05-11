@@ -47,6 +47,7 @@ public class DataCollectionManager {
 			Elements instructor = doc.select("div.instructor");
 			Elements poster = doc.select("img.swiper-lazy");
 			Elements courseURL = doc.select("a.course_card_front");
+			Elements reviewCnt = doc.select("div.rating span.review_cnt");
 			for (int j = 0; j < title.size(); j++) {
 				LectureVO vo = new LectureVO();
 				vo.setId(id++);
@@ -63,39 +64,47 @@ public class DataCollectionManager {
 				vo.setLink(url);
 				Document inner = Jsoup.connect(url).get();
 				Element star = inner.selectFirst("div.dashboard-star__num");
+				String rcnt = inner.selectFirst("span.cd-review__sub-title").text();
+				if(rcnt.equals("")) {
+					vo.setReviewcnt(0);
+				}
+				else {
+					vo.setReviewcnt(Integer.parseInt(rcnt.substring(2, rcnt.length()-1)));
+				}
 				if(Objects.isNull(star))
 					vo.setStar(0.0);
 				else
 					vo.setStar(Double.parseDouble(star.text()));
+				System.out.println(vo);
 				list.add(vo);
 			}
 		}
-
 		return list;
 	}
 	
-	public static void writeData(List<LectureVO> list) throws IOException {
+	
+	public static List<LectureVO> readLectureData() throws IOException, ClassNotFoundException{
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath));
+		return (List<LectureVO>)ois.readObject();
+	}
+	public static void writeLectureData(List<LectureVO> list) throws IOException {
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath));
 		oos.writeObject(list);
 	}
-	
-	public static List<LectureVO> readData() throws IOException, ClassNotFoundException{
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath));
-		return (List<LectureVO>)ois.readObject();
+	public static void writeImageData(List<LectureVO> list) throws FileNotFoundException, IOException{
+		List<ImageIcon> imgList = new ArrayList<ImageIcon>();
+		for(LectureVO vo : list) {
+			imgList.add(new ImageIcon(new URL(encodeURL(vo.getPoster()))));
+		}
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("c:\\java_datas\\imgDatas.ser"));
+		oos.writeObject(imgList);
 	}
 
 	public static void main(String[] args) {
 		try {
-			writeData(collectData());
-			List<LectureVO> data = readData();
-			
-			List<ImageIcon> imgList = new ArrayList<ImageIcon>();
-			for(LectureVO vo : data) {
-				System.out.println(vo);
-				imgList.add(new ImageIcon(new URL(encodeURL(vo.getPoster()))));
-			}
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("c:\\java_datas\\imgDatas.ser"));
-			oos.writeObject(imgList);
+			List<LectureVO> data = collectData();
+			writeLectureData(data);
+			writeImageData(data);
 			System.out.println("저장완료~~");
 		}
 		catch(Exception e) {

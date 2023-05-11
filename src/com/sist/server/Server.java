@@ -151,7 +151,7 @@ public class Server implements Runnable{
 					}
 				}
 			} catch(Exception e) {
-					System.err.println("["+id+"/"+name+"] : "+e.getMessage());
+					System.err.println("["+s.getInetAddress().getHostAddress()+"|"+id+"|"+name+"] : "+e.getMessage());
 					waitVc.remove(this);
 					messageAll(Function.LOGOUT+"|"+id+"|"+name+"|"+sex);
 			}

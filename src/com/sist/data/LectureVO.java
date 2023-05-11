@@ -13,6 +13,7 @@ public class LectureVO implements Serializable {
 	private String instructor;
 	private String poster;
 	private String link;
+	private int reviewcnt;
 
 	public int getId() {
 		return id;
@@ -94,6 +95,14 @@ public class LectureVO implements Serializable {
 		this.link = link;
 	}
 
+	public int getReviewcnt() {
+		return reviewcnt;
+	}
+
+	public void setReviewcnt(int reviewcnt) {
+		this.reviewcnt = reviewcnt;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -108,6 +117,8 @@ public class LectureVO implements Serializable {
 		sb.append(price);
 		sb.append("|");
 		sb.append(star);
+		sb.append("|");
+		sb.append(reviewcnt);
 		sb.append("|");
 		sb.append(instructor);
 		sb.append("\n");

@@ -21,10 +21,8 @@ public class ControlPanel extends JPanel {
 		@Override
 		public void show(Container parent, String name) {
 			super.show(parent, name);
-			if(name.equals("home"))
-				prevCard="home";
-			else if(name.equals("find"))
-				prevCard="find";
+			if(!name.equals("detail"))
+				prevCard=name;
 		}
 	};
 	
